@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -404,6 +405,7 @@ public final class Tooltip {
 
             this.mToolTipId = builder.id;
             this.mText = builder.text;
+
             this.mGravity = builder.gravity;
             this.mTextResId = builder.textResId;
             this.mMaxWidth = builder.maxWidth;
@@ -774,15 +776,20 @@ public final class Tooltip {
             mView.setLayoutParams(params);
 
             mTextView = (TextView) mView.findViewById(android.R.id.text1);
-            mTextView.setText(Html.fromHtml((String) this.mText));
+            if(!(mText == null || mText.equals(""))) {
+                mTextView.setText(Html.fromHtml((String) this.mText));
+            }
+
             if (mMaxWidth > -1) {
                 mTextView.setMaxWidth(mMaxWidth);
                 log(TAG, VERBOSE, "[%d] maxWidth: %d", mToolTipId, mMaxWidth);
             }
 
-            if (0 != mTextAppearance) {
-                mTextView.setTextAppearance(getContext(), mTextAppearance);
-            }
+//            Log.d("Tooltip","Appearance is "+mTextAppearance);
+//            if (0 != mTextAppearance) {
+//                mTextView.setTextAppearance(getContext(), mTextAppearance);
+//            }
+
 
             if (null != mDrawable) {
                 mTextView.setBackgroundDrawable(mDrawable);
@@ -1448,6 +1455,7 @@ public final class Tooltip {
         Gravity gravity;
         int actionbarSize = 0;
         int textResId = R.layout.tooltip_textview;
+        int textColor = 0;
         int closePolicy = ClosePolicy.NONE;
         long showDuration;
         Point point;
@@ -1537,6 +1545,12 @@ public final class Tooltip {
             return this;
         }
 
+        public Builder textColor(int res) {
+            throwIfCompleted();
+            this.textColor = res;
+            return this;
+        }
+
         @SuppressWarnings ("unused")
         public Builder maxWidth (Resources res, @DimenRes int dimension) {
             return maxWidth(res.getDimensionPixelSize(dimension));
@@ -1580,14 +1594,6 @@ public final class Tooltip {
             this.point = new Point(point);
             this.gravity = gravity;
             return this;
-        }
-
-        /**
-         * @deprecated use {#withArrow} instead
-         */
-        @Deprecated
-        public Builder toggleArrow (boolean show) {
-            return withArrow(show);
         }
 
         /**
