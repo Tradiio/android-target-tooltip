@@ -15,6 +15,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.DimenRes;
@@ -22,7 +23,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -349,6 +349,8 @@ public final class Tooltip {
             }
         };
         private TextView mTextView;
+        private int mTextColor;
+        private Typeface mTypeFace;
         private int mSizeTolerance;
         private Animator mAnimator;
         private AnimationBuilder mFloatingAnimation;
@@ -405,6 +407,8 @@ public final class Tooltip {
 
             this.mToolTipId = builder.id;
             this.mText = builder.text;
+            this.mTextColor = builder.textColor;
+            this.mTypeFace = builder.typeFace;
 
             this.mGravity = builder.gravity;
             this.mTextResId = builder.textResId;
@@ -776,20 +780,20 @@ public final class Tooltip {
             mView.setLayoutParams(params);
 
             mTextView = (TextView) mView.findViewById(android.R.id.text1);
-            if(!(mText == null || mText.equals(""))) {
+
+            if(!(mText == null || mText.equals("")))
                 mTextView.setText(Html.fromHtml((String) this.mText));
-            }
+
+            if(mTypeFace != null)
+                mTextView.setTypeface(mTypeFace);
+
+            if(mTextColor > 0)
+                mTextView.setTextColor(getResources().getColor(mTextColor));
 
             if (mMaxWidth > -1) {
                 mTextView.setMaxWidth(mMaxWidth);
                 log(TAG, VERBOSE, "[%d] maxWidth: %d", mToolTipId, mMaxWidth);
             }
-
-//            Log.d("Tooltip","Appearance is "+mTextAppearance);
-//            if (0 != mTextAppearance) {
-//                mTextView.setTextAppearance(getContext(), mTextAppearance);
-//            }
-
 
             if (null != mDrawable) {
                 mTextView.setBackgroundDrawable(mDrawable);
@@ -1456,6 +1460,7 @@ public final class Tooltip {
         int actionbarSize = 0;
         int textResId = R.layout.tooltip_textview;
         int textColor = 0;
+        Typeface typeFace;
         int closePolicy = ClosePolicy.NONE;
         long showDuration;
         Point point;
@@ -1548,6 +1553,12 @@ public final class Tooltip {
         public Builder textColor(int res) {
             throwIfCompleted();
             this.textColor = res;
+            return this;
+        }
+
+        public Builder textTypeFont(Typeface tf){
+            throwIfCompleted();
+            this.typeFace = tf;
             return this;
         }
 
