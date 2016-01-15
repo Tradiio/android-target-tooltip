@@ -1,17 +1,14 @@
 apply plugin: 'com.android.library'
 
-group GROUP
-version VERSION_NAME
-
 android {
-    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
+        targetSdkVersion 23
         versionCode 1
-        versionName VERSION_NAME
+        versionName "1.0"
         consumerProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
     }
 
@@ -46,9 +43,5 @@ dependencies {
     compile 'com.android.support:support-annotations:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
 }
-
-
-apply from: rootProject.file('checkstyle.gradle')
-apply from: 'https://raw.githubusercontent.com/sephiroth74/gradle-mvn-push/master/gradle-mvn-push.gradle'
 
 uploadArchives.dependsOn 'check'

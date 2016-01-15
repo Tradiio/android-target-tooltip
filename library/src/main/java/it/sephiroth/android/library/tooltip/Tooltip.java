@@ -15,6 +15,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.DimenRes;
@@ -348,6 +349,8 @@ public final class Tooltip {
             }
         };
         private TextView mTextView;
+        private int mTextColor;
+        private Typeface mTypeFace;
         private int mSizeTolerance;
         private Animator mAnimator;
         private AnimationBuilder mFloatingAnimation;
@@ -404,6 +407,9 @@ public final class Tooltip {
 
             this.mToolTipId = builder.id;
             this.mText = builder.text;
+            this.mTextColor = builder.textColor;
+            this.mTypeFace = builder.typeFace;
+
             this.mGravity = builder.gravity;
             this.mTextResId = builder.textResId;
             this.mMaxWidth = builder.maxWidth;
@@ -774,14 +780,19 @@ public final class Tooltip {
             mView.setLayoutParams(params);
 
             mTextView = (TextView) mView.findViewById(android.R.id.text1);
-            mTextView.setText(Html.fromHtml((String) this.mText));
+
+            if(!(mText == null || mText.equals("")))
+                mTextView.setText(Html.fromHtml((String) this.mText));
+
+            if(mTypeFace != null)
+                mTextView.setTypeface(mTypeFace);
+
+            if(mTextColor > 0)
+                mTextView.setTextColor(getResources().getColor(mTextColor));
+
             if (mMaxWidth > -1) {
                 mTextView.setMaxWidth(mMaxWidth);
                 log(TAG, VERBOSE, "[%d] maxWidth: %d", mToolTipId, mMaxWidth);
-            }
-
-            if (0 != mTextAppearance) {
-                mTextView.setTextAppearance(getContext(), mTextAppearance);
             }
 
             if (null != mDrawable) {
@@ -1448,6 +1459,8 @@ public final class Tooltip {
         Gravity gravity;
         int actionbarSize = 0;
         int textResId = R.layout.tooltip_textview;
+        int textColor = 0;
+        Typeface typeFace;
         int closePolicy = ClosePolicy.NONE;
         long showDuration;
         Point point;
@@ -1537,6 +1550,18 @@ public final class Tooltip {
             return this;
         }
 
+        public Builder textColor(int res) {
+            throwIfCompleted();
+            this.textColor = res;
+            return this;
+        }
+
+        public Builder textTypeFont(Typeface tf){
+            throwIfCompleted();
+            this.typeFace = tf;
+            return this;
+        }
+
         @SuppressWarnings ("unused")
         public Builder maxWidth (Resources res, @DimenRes int dimension) {
             return maxWidth(res.getDimensionPixelSize(dimension));
@@ -1580,14 +1605,6 @@ public final class Tooltip {
             this.point = new Point(point);
             this.gravity = gravity;
             return this;
-        }
-
-        /**
-         * @deprecated use {#withArrow} instead
-         */
-        @Deprecated
-        public Builder toggleArrow (boolean show) {
-            return withArrow(show);
         }
 
         /**
