@@ -25,10 +25,11 @@ Usage
 			.activateDelay(800)
 			.showDelay(300)
 			.text(R.string.hello_world)
+			.textColor(R.color.black)
 			.maxWidth(500)
 			.withArrow(true)
 			.withOverlay(true)
-			floatingAnimation(AnimationBuilder.DEFAULT)
+			.floatingAnimation(AnimationBuilder.DEFAULT)
 			.build()
 		).show();
 
