@@ -3,9 +3,11 @@ package it.sephiroth.android.library.tooltip;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import static android.util.Log.INFO;
@@ -59,5 +61,12 @@ final class Utils {
 
     static boolean rectContainsRectWithTolerance (@NonNull final Rect parentRect, @NonNull final Rect childRect, final int t) {
         return parentRect.contains(childRect.left + t, childRect.top + t, childRect.right - t, childRect.bottom - t);
+    }
+
+    static int convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return Math.round(px);
     }
 }
