@@ -39,13 +39,13 @@ Custom Views
 ===
 A Custom view can also be specified
 
- Tooltip.make(this,
-                        new Builder(101)
-                        .anchor(aView, Gravity.BOTTOM)
+ 	Tooltip.make(this,
+            new Builder(101)
+            .anchor(aView, Gravity.BOTTOM)
 			.withCustomView(R.layout.my_custom_view)
 			.withCustomArrow(true,R.id.mTooltipContainer)
-                        .build()
-                ).show();
+            .build()
+    ).show();
 
 mTooltipContainer must be of type it.sephiroth.android.library.tooltip.TooltipFramelayout.
 An arrow will be drawn around the container.
