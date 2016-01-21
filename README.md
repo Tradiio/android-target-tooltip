@@ -47,7 +47,7 @@ A Custom view can also be specified(like before) but you can specify wether to s
             .build()
     ).show();
 
-mTooltipContainer must be of type <it.sephiroth.android.library.tooltip.TooltipFramelayout>.
+mTooltipContainer must be of type \<it.sephiroth.android.library.tooltip.TooltipFramelayout\>.
 An arrow will be drawn around the container.
 
 
