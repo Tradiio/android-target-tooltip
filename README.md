@@ -37,7 +37,7 @@ See the inner [Builder][1] class for the complete set of options
 
 Custom Views
 ===
-A Custom view can also be specified
+A Custom view can also be specified(like before) but you can specify wether to show or not an arrow.
 
  	Tooltip.make(this,
             new Builder(101)
@@ -47,7 +47,7 @@ A Custom view can also be specified
             .build()
     ).show();
 
-mTooltipContainer must be of type it.sephiroth.android.library.tooltip.TooltipFramelayout.
+mTooltipContainer must be of type <it.sephiroth.android.library.tooltip.TooltipFramelayout>.
 An arrow will be drawn around the container.
 
 
