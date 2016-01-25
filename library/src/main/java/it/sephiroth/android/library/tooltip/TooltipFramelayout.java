@@ -47,7 +47,7 @@ public class TooltipFramelayout extends FrameLayout {
             mPaint.setColor(Color.WHITE);
             Path path = new Path();
 
-            Log.d("Oi", "Anchor Point X: " + mAnchorPoint.x);
+//            Log.d("Oi", "Anchor Point X: " + mAnchorPoint.x);
 
             if(mGravity == Tooltip.Gravity.BOTTOM){
                 path.moveTo(mAnchorPoint.x , 0);
@@ -87,19 +87,19 @@ public class TooltipFramelayout extends FrameLayout {
         mRect = new Rect(thisPosition[0],thisPosition[1],thisPosition[0]+getWidth(),thisPosition[1]+getHeight());
         mAnchorRect = new Rect(anchorPosition[0],anchorPosition[1],anchorPosition[0]+v.getWidth(),anchorPosition[1]+v.getHeight());
 
-        Log.d("Oi","----- Esta Vista -----");
-        Log.d("Oi","Left: "+mRect.left);
-        Log.d("Oi","Top: "+mRect.top);
-        Log.d("Oi","Right: "+mRect.right);
-        Log.d("Oi","Bottom: "+mRect.bottom);
-        Log.d("Oi","----- Vista Anchora -----");
-        Log.d("Oi","Left: "+mAnchorRect.left);
-        Log.d("Oi","Top: "+mAnchorRect.top);
-        Log.d("Oi","Right: "+mAnchorRect.right);
-        Log.d("Oi","Bottom: "+mAnchorRect.bottom);
-
-        Log.d("Oi","Primeira opção centerX :1 - "+mAnchorRect.centerX()+"      2 - "+(mAnchorRect.left + (mAnchorRect.right - mAnchorRect.left)/2));
-        Log.d("Oi","Segunda opção centerX :1 - "+mRect.centerX()+"     2 - " +(mAnchorRect.left + (mRect.right - mRect.left)/2));
+//        Log.d("Oi","----- Esta Vista -----");
+//        Log.d("Oi","Left: "+mRect.left);
+//        Log.d("Oi","Top: "+mRect.top);
+//        Log.d("Oi","Right: "+mRect.right);
+//        Log.d("Oi","Bottom: "+mRect.bottom);
+//        Log.d("Oi","----- Vista Anchora -----");
+//        Log.d("Oi","Left: "+mAnchorRect.left);
+//        Log.d("Oi","Top: "+mAnchorRect.top);
+//        Log.d("Oi","Right: "+mAnchorRect.right);
+//        Log.d("Oi","Bottom: "+mAnchorRect.bottom);
+//
+//        Log.d("Oi","Primeira opção centerX :1 - "+mAnchorRect.centerX()+"      2 - "+(mAnchorRect.left + (mAnchorRect.right - mAnchorRect.left)/2));
+//        Log.d("Oi","Segunda opção centerX :1 - "+mRect.centerX()+"     2 - " +(mAnchorRect.left + (mRect.right - mRect.left)/2));
 
         int x;
         int y;
@@ -118,7 +118,7 @@ public class TooltipFramelayout extends FrameLayout {
 
         mAnchorPoint = new Point(x,y);
 
-        Log.d("Oi","Centro = "+mAnchorPoint.toString());
+//        Log.d("Oi","Centro = "+mAnchorPoint.toString());
     }
 
 }
