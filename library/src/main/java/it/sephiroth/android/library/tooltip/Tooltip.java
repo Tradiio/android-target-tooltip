@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -209,6 +210,8 @@ public final class Tooltip {
         void setTextColor (final ColorStateList color);
 
         void requestLayout ();
+
+        View getView();
     }
 
     public interface Callback {
@@ -266,6 +269,8 @@ public final class Tooltip {
         private boolean mShowing;
         private WeakReference<View> mViewAnchor;
         private boolean mAttached;
+        private boolean mIsCustomArrow;
+        private int mCustomContainerResId;
         private final OnAttachStateChangeListener mAttachedStateListener = new OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow (final View v) {
@@ -383,6 +388,16 @@ public final class Tooltip {
                                 mViewRect.set(mTempRect);
                                 calculatePositions();
                             }
+
+                            if(mIsCustomArrow){
+                                TooltipFramelayout frame = (TooltipFramelayout) TooltipViewImpl.this.findViewById(mCustomContainerResId);
+                                if (frame == null)
+                                    ;
+                                else {
+                                    frame.setAnchor(view,mGravity);
+                                    frame.invalidate();
+                                }
+                            }
                         } else {
                             if (dbg) {
                                 log(TAG, WARN, "[%d] view is null", mToolTipId);
@@ -398,7 +413,7 @@ public final class Tooltip {
 
             TypedArray theme =
                 context.getTheme()
-                    .obtainStyledAttributes(null, R.styleable.TooltipLayout, builder.defStyleAttr, builder.defStyleRes);
+                        .obtainStyledAttributes(null, R.styleable.TooltipLayout, builder.defStyleAttr, builder.defStyleRes);
             this.mPadding = theme.getDimensionPixelSize(R.styleable.TooltipLayout_ttlm_padding, 30);
             this.mTextAppearance = theme.getResourceId(R.styleable.TooltipLayout_android_textAppearance, 0);
             this.mTextViewElevation = theme.getDimension(R.styleable.TooltipLayout_ttlm_elevation, 0);
@@ -409,6 +424,8 @@ public final class Tooltip {
             this.mText = builder.text;
             this.mTextColor = builder.textColor;
             this.mTypeFace = builder.typeFace;
+            this.mIsCustomArrow = builder.customArrow;
+            this.mCustomContainerResId = builder.customContainerResId;
 
             this.mGravity = builder.gravity;
             this.mTextResId = builder.textResId;
@@ -632,6 +649,12 @@ public final class Tooltip {
         }
 
         @Override
+        public View getView() {
+
+            return this;
+        }
+
+        @Override
         public boolean isAttached () {
             return mAttached;
         }
@@ -781,28 +804,37 @@ public final class Tooltip {
 
             mTextView = (TextView) mView.findViewById(android.R.id.text1);
 
-            if(!(mText == null || mText.equals("")))
-                mTextView.setText(Html.fromHtml((String) this.mText));
+            if(mTextView != null) {
 
-            if(mTypeFace != null)
-                mTextView.setTypeface(mTypeFace);
+                if(!(mText == null || mText.equals(""))) {
+                    mTextView.setText(Html.fromHtml((String) this.mText));
+                }
 
-            if(mTextColor > 0)
-                mTextView.setTextColor(getResources().getColor(mTextColor));
+                if (null != mDrawable) {
+                    mTextView.setBackgroundDrawable(mDrawable);
+                }
 
-            if (mMaxWidth > -1) {
-                mTextView.setMaxWidth(mMaxWidth);
-                log(TAG, VERBOSE, "[%d] maxWidth: %d", mToolTipId, mMaxWidth);
-            }
-
-            if (null != mDrawable) {
-                mTextView.setBackgroundDrawable(mDrawable);
                 if (mHideArrow) {
                     mTextView.setPadding(mPadding / 2, mPadding / 2, mPadding / 2, mPadding / 2);
                 } else {
                     mTextView.setPadding(mPadding, mPadding, mPadding, mPadding);
                 }
+
+                if(mTypeFace != null)
+                    mTextView.setTypeface(mTypeFace);
+
+                if(mTextColor > 0)
+                    mTextView.setTextColor(getResources().getColor(mTextColor));
+
+
+                if (mMaxWidth > -1) {
+                    mTextView.setMaxWidth(mMaxWidth);
+                    log(TAG, VERBOSE, "[%d] maxWidth: %d", mToolTipId, mMaxWidth);
+                }
+            } else {
+                //Textview is null. Probably Customizing
             }
+
             this.addView(mView);
 
             if (null != mViewOverlay) {
@@ -1471,6 +1503,8 @@ public final class Tooltip {
         int defStyleAttr = R.attr.ttlm_defaultStyle;
         long activateDelay = 0;
         boolean isCustomView;
+        boolean customArrow;
+        int customContainerResId;
         boolean restrictToScreenEdges = true;
         long fadeDuration = 200;
         Callback closeCallback;
@@ -1511,6 +1545,13 @@ public final class Tooltip {
         public Builder withCustomView (int resId, boolean replaceBackground) {
             this.textResId = resId;
             this.isCustomView = replaceBackground;
+            return this;
+        }
+
+        public Builder withCustomArrow(boolean withArrow,int customContainerResId){
+            throwIfCompleted();
+            this.customContainerResId = customContainerResId;
+            this.customArrow = withArrow;
             return this;
         }
 

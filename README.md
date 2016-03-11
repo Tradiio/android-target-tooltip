@@ -25,14 +25,31 @@ Usage
 			.activateDelay(800)
 			.showDelay(300)
 			.text(R.string.hello_world)
+			.textColor(R.color.black)
 			.maxWidth(500)
 			.withArrow(true)
 			.withOverlay(true)
-			floatingAnimation(AnimationBuilder.DEFAULT)
+			.floatingAnimation(AnimationBuilder.DEFAULT)
 			.build()
 		).show();
 
 See the inner [Builder][1] class for the complete set of options
+
+Custom Views
+===
+A Custom view can also be specified(like before) but you can specify wether to show or not an arrow.
+
+ 	Tooltip.make(this,
+            new Builder(101)
+            .anchor(aView, Gravity.BOTTOM)
+			.withCustomView(R.layout.my_custom_view)
+			.withCustomArrow(true,R.id.mTooltipContainer)
+            .build()
+    ).show();
+
+mTooltipContainer must be of type \<it.sephiroth.android.library.tooltip.TooltipFramelayout\>.
+An arrow will be drawn around the container.
+
 
 Customization
 ===
